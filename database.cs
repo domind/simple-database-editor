@@ -6,6 +6,8 @@ namespace database
 {
     public class Test
     {
+        public static string databaseName="";
+
         public static void menuDisplay()
         {
             Console.WriteLine("This menu      :m");
@@ -22,7 +24,7 @@ namespace database
         { 
             Console.Clear();
             IDbCommand dbcmd = dbcon.CreateCommand();
-            string sql = "SELECT * FROM Persons";
+            string sql = "SELECT * FROM "+Test.databaseName;
             dbcmd.CommandText = sql;
             IDataReader reader = dbcmd.ExecuteReader();
             DataTable schemaTable = reader.GetSchemaTable();
@@ -105,7 +107,7 @@ namespace database
             }
 
             IDbCommand dbcmd = dbcon.CreateCommand();
-            string sql ="ALTER TABLE Persons ADD " +s+ s1;
+            string sql ="ALTER TABLE "+Test.databaseName+" ADD " +s+ s1;
             dbcmd.CommandText = sql;
             try
             {
@@ -130,7 +132,7 @@ namespace database
             string s;
             s = Console.ReadLine();
             IDbCommand dbcmd = dbcon.CreateCommand();
-            string sql = "ALTER TABLE Persons DROP COLUMN " + s ;
+            string sql = "ALTER TABLE "+Test.databaseName+" DROP COLUMN " + s ;
             dbcmd.CommandText = sql;
             try
             {
@@ -151,7 +153,7 @@ namespace database
         public static void addRecord(ref IDbConnection dbcon)
         {
             IDbCommand dbcmd = dbcon.CreateCommand();
-            string sql = "SELECT * FROM Persons";
+            string sql = "SELECT * FROM "+Test.databaseName;
             dbcmd.CommandText = sql;
             IDataReader reader = dbcmd.ExecuteReader();
             DataTable schemaTable = reader.GetSchemaTable();
@@ -171,7 +173,7 @@ namespace database
 
             s1=s1.Remove(s1.Length - 1);
             dbcmd = dbcon.CreateCommand();
-            sql = "INSERT INTO Persons VALUES (" + s1 + ")";
+            sql = "INSERT INTO "+Test.databaseName+" VALUES (" + s1 + ")";
             dbcmd.CommandText = sql;
             try
             {
@@ -196,7 +198,7 @@ namespace database
             string sql;
             sql = Console.ReadLine();
             IDbCommand dbcmd = dbcon.CreateCommand();
-             sql = "DELETE FROM Persons WHERE "+s+"="+sql;
+            sql = "DELETE FROM "+Test.databaseName+" WHERE "+s+"="+sql;
             dbcmd.CommandText = sql;
             try
             {
@@ -224,7 +226,7 @@ namespace database
             Console.WriteLine("Enter column name for modification");
             string sql= Console.ReadLine();
             Console.WriteLine("Enter new value");
-            sql = "UPDATE Persons SET " +sql + " = ' " + Console.ReadLine() + "' WHERE "+s;
+            sql = "UPDATE "+Test.databaseName+" SET " +sql + " = ' " + Console.ReadLine() + "' WHERE "+s;
             Console.WriteLine(sql);
             IDbCommand dbcmd = dbcon.CreateCommand();
             dbcmd.CommandText = sql;
@@ -254,6 +256,7 @@ namespace database
             Console.WriteLine("Enter database name (default test)");
             readConsole = Console.ReadLine();
             if (readConsole == "") readConsole = "test";
+            Test.databaseName = readConsole;
             connectionString = connectionString + "Database=" + readConsole + ";";
             Console.WriteLine("Enter user ID (default test)");
             readConsole = Console.ReadLine();
